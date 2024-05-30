@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server = 'http://16.170.210.194:3000/api';
+const server = 'https://16.170.210.194:3000/api';
 
 const instance = axios.create({
   baseURL: server,
