@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const server = 'https://51.20.176.204:443/api';
+const server = 'https://a9b9-51-20-176-204.ngrok-free.app/api';
 
 const instance = axios.create({
   baseURL: server,
