@@ -13,7 +13,7 @@ instance.interceptors.request.use((request) => {
   request.headers = {
     'Accept': "application/json, text/plain, */*",
     'x-access-token': token,
-    'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
     'ngrok-skip-browser-warning':'true'
   }
   return request
