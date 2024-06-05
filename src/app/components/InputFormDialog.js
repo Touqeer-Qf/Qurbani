@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box, Dialog, DialogContent, DialogTitle, TextField, MenuItem, Button, Grid, InputAdornment, IconButton
-} from '@mui/material';
+import { Box, Dialog, DialogContent, DialogTitle, TextField, MenuItem, Button, Grid} from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { EditLocationAlt } from '@mui/icons-material';
 import Axios from '../../axios';
 
 const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshData, bookerName }) => {
-  console.log("booke=>", bookerName)
+  
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [category, setCategory] = useState('normal');
   const [boxNumber, setBoxNumber] = useState(selectedAnimal);
   const [partNo, setPartNo] = useState(partNumber);
+  console.log("Partnum=>", partNo)
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setBoxNumber(selectedAnimal);
     setPartNo(partNumber);
-    reset(); // Reset form fields when dependencies change
+    reset();
   }, [selectedAnimal, partNumber, reset]);
 
   const handleFormSubmit = async (formData) => {
@@ -69,23 +67,8 @@ const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshDat
             </Grid>
             <Grid item xs={4}>
               <TextField
-                select
-                label="Category"
-                fullWidth
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                {...register('category', { required: true })}
-                error={!!errors.category}
-                helperText={errors.category ? 'Category is required' : ''}
-              >
-                <MenuItem value="normal">Normal</MenuItem>
-                <MenuItem value="premium">Premium</MenuItem>
-              </TextField>
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                disabled
                 label="Animal Number"
+                disabled
                 fullWidth
                 defaultValue={selectedAnimal}
                 {...register('boxNumber')}
@@ -141,15 +124,15 @@ const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshDat
               <TextField
                 label="Hissa Number"
                 fullWidth
-                value={partNo}
-                InputProps={{ readOnly: true }}
+                defaultValue={partNumber}
+                // InputProps={{ readOnly: true }}
                 {...register('partNo')}
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
                 label="Amount"
-                type="number"
+                type="tel"
                 fullWidth
                 {...register('amount', { required: 'Amount is required' })}
                 error={!!errors.amount}
