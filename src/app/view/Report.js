@@ -2,12 +2,15 @@ import React, { Fragment, useEffect, useState } from 'react';
 import Layout from './Layout';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, TablePagination, Box
+  Paper, TablePagination, Box,
+  TextField,
+  Typography
 } from '@mui/material';
 import Axios from '../../axios';
 import colors from '../style/colors';
 
 const Report = () => {
+  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [bookingData, setBookingData] = useState([]);
@@ -36,6 +39,12 @@ const Report = () => {
     }
 };
 
+const filteredData = bookingData?.filter(data => {
+  const values = Object?.values(data)?.map(value => String(value)?.toLowerCase());
+  return values?.some(value => value?.includes(searchQuery?.toLowerCase()));
+});
+
+
 useEffect(()=>{
   getData()
 },[])
@@ -43,6 +52,10 @@ useEffect(()=>{
   return (
     <Layout>
         <Box sx={{ pt: 5, pl:2, pr:4 }}>
+          <Box sx={{bgcolor:"white", py:2, display:"flex", alignItems:"center"}}>
+            <Typography sx={{px:2}}>Search: </Typography>
+          <TextField label="Search By Name" onChange={(e) => setSearchQuery(e.target.value)}/>
+          </Box>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <TableContainer sx={{
                 '&::-webkit-scrollbar': {
@@ -79,7 +92,7 @@ useEffect(()=>{
             <TableBody>
                 {loading ? <p style={{paddingLeft:"12px"}}>...loading</p>:
               <Fragment>
-                {bookingData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                {filteredData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                   <TableRow key={row.ID}>
                     <TableCell component="th" scope="row" sx={{ fontSize: "14px" }}>{row.customer_name}</TableCell>
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.booker_name}</TableCell>

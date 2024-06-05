@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 import { EditLocationAlt } from '@mui/icons-material';
 import Axios from '../../axios';
 
-const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshData }) => {
+const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshData, bookerName }) => {
+  console.log("booke=>", bookerName)
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [category, setCategory] = useState('normal');
@@ -103,6 +104,7 @@ const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshDat
               <TextField
                 label="Booker Name"
                 fullWidth
+                defaultValue={bookerName}
                 {...register('bookerName', { required: 'Booker Name is required' })}
                 error={!!errors.bookerName}
                 helperText={errors.bookerName?.message}

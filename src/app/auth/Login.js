@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Box, Button, Grid, InputAdornment, Typography, IconButton, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles'
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Axios from '../../axios';
-import useProvideAuth from '../useProvideAuth';
+import useAuth from '../useAuth';
 
 const BgImage = styled('div')({
   backgroundImage: `url(https://enews.hamariweb.com/tpl_assets/2024/05/Untitled-Project-2024-05-18T113816.181.jpg)`,
@@ -16,16 +15,11 @@ const BgImage = styled('div')({
   height: "100vh",
 });
 
-const SignUpLink = styled('a')({
-  textDecoration: "none",
-  color: "#1976d2", // Replace this with your primary color
-  marginLeft: "6px",
-});
 
 function Login() {
   
-  const navigate = useNavigate();
-  const { login, setUser } = useProvideAuth();
+  
+  const { login, setUser } = useAuth();
   const [loading, setLoading] = useState(false);
 
   // For Show Password Toggle
