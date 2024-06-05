@@ -3,6 +3,7 @@ import { Box, Grid, Typography } from '@mui/material'
 import Layout from './Layout'
 import InputFormDialog from '../components/InputFormDialog';
 import Axios from '../../axios';
+import useAuth from '../useAuth';
 
 const getBoxStyle = (filled, total) => {
   if (filled === total) {
@@ -25,6 +26,7 @@ const getBoxStyle = (filled, total) => {
 
 
 const Home = () => {
+  const {name} = useAuth()
   const total = 7;
     const [dialog, setDialog] = useState(false)
     const [selectedBox, setSelectedBox] = useState(null);
@@ -52,7 +54,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <InputFormDialog open={dialog} setOpen={()=>setDialog(!dialog)} selectedAnimal={selectedBox} partNumber={partNumber+1} refreshData={refreshData} />
+      <InputFormDialog open={dialog} setOpen={()=>setDialog(!dialog)} selectedAnimal={selectedBox} partNumber={partNumber+1} refreshData={refreshData} bookerName={name}/>
         <Grid container  pt={5} pl={2}> 
         {bookingData?.map(({ ID, TotalParts, AllocatedParts }) => {
           const isCompleted = AllocatedParts === total;
