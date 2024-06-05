@@ -14,7 +14,7 @@ instance.interceptors.request.use((request) => {
     'Accept': "application/json, text/plain, */*",
     'x-access-token': token,
     'Content-Type' : 'application/json'
-    'ngrok-skip-browser-warning':true
+    'ngrok-skip-browser-warning':'true'
   }
   return request
 });
