@@ -40,7 +40,7 @@ function Login() {
         username: formData.email,
         password: formData.password,
       };
-      const { status, data } = await Axios.post('/users/login', obj)
+      const { status, data } = await Axios.post('users/login', obj)
       if (status === 200 && data.auth === true) {
         setUser(data.token);
         login(data)
