@@ -3,8 +3,7 @@ import Login from "../auth/Login";
 import Home from "../view/Home";
 import Report from "../view/Report";
 import { PageNotFound } from "../view/NotFound";
-
-
+import EditRecord from "../view/EditRecord";
 
 const PrivateRoutes = [
   {
@@ -14,6 +13,10 @@ const PrivateRoutes = [
   {
     path: '/report',
     component: <Report />
+  },
+  {
+    path: "/edit-record",
+    component: <EditRecord/>,
   },
   {
     path: "*",
