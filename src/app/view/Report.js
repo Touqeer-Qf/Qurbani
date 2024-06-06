@@ -4,10 +4,15 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Paper, TablePagination, Box,
   TextField,
-  Typography
+  Typography,
+  Tooltip,
+  IconButton
 } from '@mui/material';
 import Axios from '../../axios';
 import colors from '../style/colors';
+import { Create, DeleteForever, } from '@mui/icons-material';
+import ConfirmationDialog from '../components/ConfirmDialog';
+import { Link } from 'react-router-dom';
 
 const Report = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,6 +20,8 @@ const Report = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [bookingData, setBookingData] = useState([]);
   const [loading, setLoading] = useState(false)
+  const [confirmDialog, setConfirmDialog] = useState(false)
+  const [bookingId, setBookingId] = useState(null)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -44,6 +51,16 @@ const filteredData = bookingData?.filter(data => {
   return values?.some(value => value?.includes(searchQuery?.toLowerCase()));
 });
 
+const recordDelete = async () => {
+  try {
+    const { data } = await Axios.delete(`bookings/${bookingId}`)
+    if (data === null) return
+    getData()
+  }
+  catch (error) {
+    console.log(error)
+  }
+}
 
 useEffect(()=>{
   getData()
@@ -51,6 +68,7 @@ useEffect(()=>{
 
   return (
     <Layout>
+      <ConfirmationDialog open={confirmDialog} onClose={() => setConfirmDialog(!confirmDialog)} action={recordDelete} title={"Delete This Record"}/>
         <Box sx={{ pt: 5, pl:2, pr:4 }}>
           <Box sx={{bgcolor:"white", py:2, display:"flex", alignItems:"center"}}>
             <Typography sx={{px:2}}>Search: </Typography>
@@ -87,13 +105,14 @@ useEffect(()=>{
                 <TableCell sx={{ fontWeight: "bold" }} align="center">Booking Date</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }} align="center">Address</TableCell>
                 <TableCell sx={{ fontWeight: "bold" }} align="center">Amount</TableCell>
+                <TableCell sx={{ fontWeight: "bold" }} align="center">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
                 {loading ? <p style={{paddingLeft:"12px"}}>...loading</p>:
               <Fragment>
                 {filteredData?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                  <TableRow key={row.ID}>
+                  <TableRow key={row.booking_id}>
                     <TableCell component="th" scope="row" sx={{ fontSize: "14px" }}>{row.customer_name}</TableCell>
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.booker_name}</TableCell>
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.phone_number}</TableCell>
@@ -103,6 +122,20 @@ useEffect(()=>{
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.date_of_booking?.split('T')[0]}</TableCell>
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.address}</TableCell>
                     <TableCell align="center" sx={{ fontSize: "14px" }}>{row.amount}</TableCell>
+                    <TableCell align="center" sx={{ fontSize: "14px" }}>
+                    <Box display="flex">
+                          <Tooltip title="Edit">
+                            <IconButton component={Link} to={`/edit-record`} state={{ data: row }}>
+                              <Create sx={{ color: colors.primary }} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton onClick={() => { setBookingId(row.booking_id); setConfirmDialog(!confirmDialog) }}>
+                              <DeleteForever sx={{ color: "#eb4b3f" }} />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                    </TableCell>
                   </TableRow>
                 ))}
               </Fragment>

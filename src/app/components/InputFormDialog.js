@@ -20,11 +20,12 @@ const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshDat
   }, [selectedAnimal, partNumber, reset]);
 
   const handleFormSubmit = async (formData) => {
+    console.log("formData=>", formData)
     setLoading(true);
     try {
       const obj = {
         cow_id: selectedAnimal,
-        part_number: partNo,
+        part_number: formData.partNo,
         customer_name: formData.firstName,
         phone_number: formData.phoneNumber,
         date_of_booking: date,
@@ -124,7 +125,7 @@ const InputFormDialog = ({ open, setOpen, partNumber, selectedAnimal, refreshDat
               <TextField
                 label="Hissa Number"
                 fullWidth
-                defaultValue={partNumber}
+                defaultValue={partNo}
                 // InputProps={{ readOnly: true }}
                 {...register('partNo')}
               />
