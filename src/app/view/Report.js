@@ -198,18 +198,6 @@ const Report = () => {
   return (
     <Layout>
       <Box sx={{ pt: 5, pl: 2, pr: 4 }}>
-        <Box sx={{ bgcolor: "white", py: 2, display: "flex", flexWrap: "wrap", alignItems: "center" }}>
-          {columns.map((column) => (
-            <Box key={column} sx={{ px: 2, py: 1 }}>
-              <TextField
-                label={`Filter by ${column.replace('_', ' ').toUpperCase()}`}
-                name={column}
-                value={filters[column] || ''}
-                onChange={handleFilterChange}
-              />
-            </Box>
-          ))}
-        </Box>
         <Paper sx={{ width: '100%', mb: 2 }}>
           <TableContainer sx={{
             '&::-webkit-scrollbar': {
@@ -235,6 +223,15 @@ const Report = () => {
                   {columns.map((column) => (
                     <TableCell key={column} sx={{ fontWeight: "bold" }}>
                       {column.replace('_', ' ').toUpperCase()}
+                      <TextField
+                        name={column}
+                        value={filters[column] || ''}
+                        onChange={handleFilterChange}
+                        placeholder={`Filter ${column}`}
+                        variant="standard"
+                        size="small"
+                        sx={{ mt: 1, width: '100%' }}
+                      />
                     </TableCell>
                   ))}
                 </TableRow>
